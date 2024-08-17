@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Recibo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"], input[type="number"], input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        @media print {
+            @page {
+                size: 80mm auto; /* Ajusta o tamanho da página para a largura de uma impressora térmica */
+                margin: 0; /* Remove margens padrão */
+            }
+            body {
+                width: 80mm; /* Define a largura do corpo para corresponder à impressora térmica */
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                width: 100%; /* Ajusta a largura do container para a largura da impressora térmica */
+                box-shadow: none;
+                border: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Formulário de Recibo</h1>
+        <form id="receiptForm">
+            <div class="form-group">
+                <label for="receiptNumber">Número do Recibo:</label>
+                <input type="text" id="receiptNumber" name="receiptNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="date">Data:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+            <div class="form-group">
+                <label for="issuerName">Nome do Emitente:</label>
+                <input type="text" id="issuerName" name="issuerName" required>
+            </div>
+            <div class="form-group">
+                <label for="issuerAddress">Endereço do Emitente:</label>
+                <input type="text" id="issuerAddress" name="issuerAddress">
+            </div>
+            <div class="form-group">
+                <label for="payerName">Nome do Pagador:</label>
+                <input type="text" id="payerName" name="payerName" required>
+            </div>
+            <div class="form-group">
+                <label for="payerAddress">Endereço do Pagador:</label>
+                <input type="text" id="payerAddress" name="payerAddress">
+            </div>
+            <div class="form-group">
+                <label for="description">Descrição:</label>
+                <input type="text" id="description" name="description" required>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantidade:</label>
+                <input type="number" id="quantity" name="quantity" required>
+            </div>
+            <div class="form-group">
+                <label for="unitPrice">Preço Unitário:</label>
+                <input type="number" id="unitPrice" name="unitPrice" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="subtotal">Subtotal:</label>
+                <input type="number" id="subtotal" name="subtotal" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="taxes">Impostos:</label>
+                <input type="number" id="taxes" name="taxes" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="discounts">Descontos:</label>
+                <input type="number" id="discounts" name="discounts" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="total">Total:</label>
+                <input type="number" id="total" name="total" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="paymentMethod">Forma de Pagamento:</label>
+                <input type="text" id="paymentMethod" name="paymentMethod" required>
+            </div>
+            <button type="button" onclick="printReceipt()">Gerar Recibo</button>
+        </form>
+    </div>
+    <script>
+        function printReceipt() {
+            // Captura os dados do formulário
+            var receiptNumber = document.getElementById('receiptNumber').value;
+            var date = document.getElementById('date').value;
+            var issuerName = document.getElementById('issuerName').value;
+            var issuerAddress = document.getElementById('issuerAddress').value;
+            var payerName = document.getElementById('payerName').value;
+            var payerAddress = document.getElementById('payerAddress').value;
+            var description = document.getElementById('description').value;
+            var quantity = document.getElementById('quantity').value;
+            var unitPrice = document.getElementById('unitPrice').value;
+            var subtotal = document.getElementById('subtotal').value;
+            var taxes = document.getElementById('taxes').value;
+            var discounts = document.getElementById('discounts').value;
+            var total = document.getElementById('total').value;
+            var paymentMethod = document.getElementById('paymentMethod').value;
+
+            // Cria uma string para o recibo
+            var receiptContent = `
+                Número do Recibo: ${receiptNumber}\n
+                Data: ${date}\n
+                Nome do Emitente: ${issuerName}\n
+                Endereço do Emitente: ${issuerAddress}\n
+                Nome do Pagador: ${payerName}\n
+                Endereço do Pagador: ${payerAddress}\n
+                Descrição: ${description}\n
+                Quantidade: ${quantity}\n
+                Preço Unitário: ${unitPrice}\n
+                Subtotal: ${subtotal}\n
+                Impostos: ${taxes}\n
+                Descontos: ${discounts}\n
+                Total: ${total}\n
+                Forma de Pagamento: ${paymentMethod}
+            `;
+
+            // Imprime o recibo usando a funcionalidade de impressão do navegador
+            var printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>Imprimir Recibo</title></head><body><pre>' + receiptContent + '</pre></body></html>');
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+        }
+    </script>
+</body>
+</html>
